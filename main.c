@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-int main(){
-    
+#include "menu.h"
+#include "sistemasLineares.h"
+int main(){ 
+    eliminacaoGauss();
     return 0;
 }

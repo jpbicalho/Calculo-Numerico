@@ -1,7 +1,7 @@
 #include "menu.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "sistemasLineares.h"
 int criaMenu(){
     int opcao;
     printf("\tEscolha o que deseja fazer:\n");
@@ -9,4 +9,12 @@ int criaMenu(){
     printf("2.Interpolacao de pontos ");
     scanf("%d", &opcao);
     return opcao;
+}
+
+void menuSistemaLinear(){
+    printf("\tQual metodo deseja aplicar:\n");
+    eliminacaoGauss();
+}
+void menuInterpolacao(){
+    return;
 }
