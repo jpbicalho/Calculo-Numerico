@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "sistemaslineares.h": "c"
+        "sistemaslineares.h": "c",
+        "operacoes.h": "c"
     }
 }

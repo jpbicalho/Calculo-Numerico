@@ -1,12 +1,12 @@
 #ifndef SISTEMASLINEARES_H
 #define SISTEMASLINEARES_H
+typedef struct{
+    float **Mat1,**Mat2;
+}ConjuntoMat;
 void eliminacaoGauss();
-float** criaMatriz(int linha, int coluna);
-float** alocaMatriz(int linha, int coluna);
-void printaMatriz(float** matriz,int linha,int coluna);
-float** copiaMatriz(float** matriz,int linha,int coluna);
-void printaVetor(float* vet, int tamanho);
-float* criaVetor(int linha);
-void faseEliminacao(float** matriz,float* vetor,int linha,int coluna);
+ConjuntoMat faseEliminacao(float** matriz,float* vetor,int linha,int coluna);
 void faseSubstituicao(float** matriz,float* vetor,int linhas,int colunas);
+void decomposicaoLU();
+void adaptaMatrizL(float** matriz,int linha,int coluna);
+void encontraY(float** U,float * y,int linha,int coluna);
 #endif

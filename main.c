@@ -3,6 +3,6 @@
 #include "menu.h"
 #include "sistemasLineares.h"
 int main(){ 
-    eliminacaoGauss();
+    decomposicaoLU();
     return 0;
 }

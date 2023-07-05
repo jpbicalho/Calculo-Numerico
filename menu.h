@@ -1,5 +1,5 @@
-#ifndef MENU_HPP
-#define MENU_HPP
+#ifndef MENU_H
+#define MENU_H
 
 int criaMenu();
 //void ligaMenus();
