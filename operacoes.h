@@ -8,5 +8,6 @@ float** copiaMatriz(float** matriz,int linha,int coluna);
 void printaVetor(float* vet, int tamanho);
 float* criaVetor(int linha);
 float* copiaVetor(float* vetor,int tamanho);
+float resultadoFuncao(float* coeficientes,int grau,float x);
 
 #endif

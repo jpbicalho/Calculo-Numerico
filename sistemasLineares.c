@@ -68,7 +68,7 @@ void decomposicaoLU(){
     //A => U
     //b => b
     //y => y
-    //FALTA APENAS APLICAR O PASSO U * x = y
+    
     
 
 }
