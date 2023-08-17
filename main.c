@@ -6,7 +6,7 @@
 #include "raizes.h"
 
 int main(){ 
-    metodoBissecao();
+    metodoNewtonRaphson();
     
     return 0;
 }

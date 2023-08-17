@@ -88,3 +88,8 @@ float resultadoFuncao(float* coeficientes,int grau,float x){
     //printf("\n\nVALOR DA FUNCAO: %.4f\n" , resultado);
     return resultado;
 }
+float modulo(float num){
+    if(num<0){
+        return num*(-1);
+    }else return num;
+}

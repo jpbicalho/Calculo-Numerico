@@ -3,12 +3,17 @@
 
 typedef struct{
     int grau,k;
-    float precisao,Ak,Bk,Xk,*funcao,fXk,fAk;
-}Bissecao;
+    float precisao,Ak,Bk,Xk,*funcao,fXk,fdXk,fAk,*funcaoderivada;
+}MetodosRaizes;
+
 
 //calculo pelo metodo de bissecao
-Bissecao calculaXk(Bissecao dados);
+MetodosRaizes calculaXkBissecao(MetodosRaizes dados);
 void metodoBissecao();
+void metodoFalsaPosicao();
+MetodosRaizes calculaXkFalsaPosicao(MetodosRaizes dados);
+void metodoNewtonRaphson();
+MetodosRaizes calculaXkNewtonRaphson(MetodosRaizes dados);
 
 
 #endif

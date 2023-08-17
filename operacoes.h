@@ -9,5 +9,5 @@ void printaVetor(float* vet, int tamanho);
 float* criaVetor(int linha);
 float* copiaVetor(float* vetor,int tamanho);
 float resultadoFuncao(float* coeficientes,int grau,float x);
-
+float modulo(float num);
 #endif
