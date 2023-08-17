@@ -117,7 +117,7 @@ MetodosRaizes calculaXkFalsaPosicao(MetodosRaizes dados){
     return dados;
 }
 
-void    metodoNewtonRaphson(){
+void metodoNewtonRaphson(){
     //calcular f(a)*f'(a) e  f(b)*f'(b) o que for positivo assume o valor de Xk
 
     MetodosRaizes dados;
@@ -148,10 +148,11 @@ void    metodoNewtonRaphson(){
     int libera = 0;
     int it = 3;
     //definicao de qual utilizar como o x0
-    float fA = resultadoFuncao(dados.funcao,dados.grau,dados.Ak);
-    float fB = resultadoFuncao(dados.funcao,dados.grau,dados.Bk);
-    float fdA = resultadoFuncao(dados.funcaoderivada,dados.grau,dados.Ak);
-    float fdB = resultadoFuncao(dados.funcaoderivada,dados.grau,dados.Bk);
+        //calculo de f(a) e f(b)
+    float fA = resultadoFuncao(dados.funcao,dados.grau,dados.Ak);float fB = resultadoFuncao(dados.funcao,dados.grau,dados.Bk);
+        //calculo de f'(a) e f'(b) 
+    float fdA = resultadoFuncao(dados.funcaoderivada,dados.grau,dados.Ak); float fdB = resultadoFuncao(dados.funcaoderivada,dados.grau,dados.Bk);
+    //O PRODUTO QUE FOR POSITIVO VAI SER O X0
     if(fA*fdA > 0){ dados.Xk = dados.Ak;}
     if(fB*fdB > 0){ dados.Xk = dados.Bk;}
     //variavel que vai armazenar o xk-1
