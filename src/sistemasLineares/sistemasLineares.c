@@ -1,7 +1,7 @@
 #include "sistemasLineares.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include "operacoes.h"
+#include "../operacoes/operacoes.h"
 void eliminacaoGauss(){
     int linhas, colunas;
     scanf("%d", &linhas);

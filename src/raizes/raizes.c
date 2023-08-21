@@ -1,5 +1,5 @@
 #include "raizes.h"
-#include "operacoes.h"
+#include "../operacoes/operacoes.h"
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>

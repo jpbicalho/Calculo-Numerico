@@ -1,7 +1,7 @@
 #include "menu.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "sistemasLineares.h"
+#include "../sistemasLineares/sistemasLineares.h"
 int criaMenu(){
     int opcao;
     printf("\tEscolha o que deseja fazer:\n");
