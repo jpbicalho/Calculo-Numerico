@@ -181,3 +181,12 @@ float fatorial(float n){
         return 1;
     } else return n*fatorial(n-1);
 }
+Polinomio criaPolinomio(float valor){
+
+    //aloca um polinomio de grau 0 com o coeficiente[0]=valor
+    Polinomio p;
+    p.coeficiente = malloc(sizeof(float));
+    p.coeficiente[0] = valor;
+    p.grau=0;
+    return p;
+}

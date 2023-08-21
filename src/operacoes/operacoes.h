@@ -23,4 +23,5 @@ Polinomio somaPolinomio(Polinomio,Polinomio);
 Polinomio prodEscalarPolinomio(float,Polinomio);
 float arredonda4casas(float);
 float fatorial(float);
+Polinomio criaPolinomio(float valor);
 #endif

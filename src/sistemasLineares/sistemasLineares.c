@@ -104,3 +104,65 @@ void adaptaMatrizL(float** matriz,int linha,int coluna){
     }
 
 }
+
+void metodoJacobi(){
+    int it = 0;
+    float precisao = 0.01;
+    float incognitas[3]={0,0,0};
+    float atualizacao[3]={0,0,0};
+    int tamanho=3;
+    float mat[3][4]={
+        {1,2,-2, 1},
+        {1,1, 1, 1},
+        {2,2, 1, 1}};
+    float x=0;
+    
+    printf("k\t|");
+    for(int i=0;i<tamanho;i++){
+        printf("x%d\t|",i);
+    }
+    printf("erro\n");
+    printf("%d\t",it);
+    for(int i=0;i<tamanho;i++){
+    printf("|%.2f\t",incognitas);
+    }
+    printf("|----\n");
+    float erro;
+    do{
+        it++;
+        printf("%d\t",it);
+        for(int i=0;i<tamanho;i++){
+            atualizacao[i]=calculaFormulaJacobi(3,mat[i],incognitas,i);
+            printf("|%.2f\t",atualizacao[i]);
+        }
+        erro = calculaErro(incognitas,atualizacao,tamanho);
+        printf("|%.4f",erro);
+        for(int i=0;i<3;i++){
+            
+            incognitas[i] = atualizacao[i];
+        }
+        printf("\n");
+        
+        
+    }while(it<=6 && erro>precisao);
+    
+}
+float calculaFormulaJacobi(int dimensao,float* linha,float* valores,int it){
+    float coef = 1.0/linha[it];//  1/Aii
+    float somatorio=linha[dimensao];
+    for(int i=0;i<dimensao;i++){
+        if(it==i) continue;
+        somatorio = somatorio - (linha[i]*valores[i]);
+    }
+    return somatorio*coef;
+}
+
+float calculaErro(float* k1,float* k2,int tam){
+    float erro = modulo(k2[0]-k1[0]);
+    for(int i=0;i<tam;i++){
+        if(erro < modulo(k2[i]-k1[i])){
+            erro = modulo(k2[i]-k1[i]);
+            }
+    }
+    return erro;
+}

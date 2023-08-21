@@ -8,6 +8,7 @@
 #include "interpolacao/interpolacao.h"
 
 int main(){ 
-    diferencasFinitas();
+    metodoJacobi();
+    
     return 0;
 }
