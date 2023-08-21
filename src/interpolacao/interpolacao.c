@@ -1,6 +1,8 @@
 #include "interpolacao.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+
 void metodoLagrange(){
     int grauL=2;
     int *y = malloc(sizeof(int)*3);
@@ -55,33 +57,11 @@ void diferencasDivididas(){
 
     //ENTRADA DE DADOS
     int grau = 3;
-    tPonto *pontos = malloc(sizeof(tPonto)*(grau+1));
-    pontos[0].x=1; pontos[1].x=2; pontos[2].x=4; pontos[3].x=8;
-    pontos[0].y=120;pontos[1].y=94;pontos[2].y=75;pontos[3].y=62;
-    float** tabela=calculaTabela(pontos,grau);
-/*
-    //FORMAÇÃO DA TABELA
-    for(int i=0;i<=grau;i++){
-        tabela[i][0] = pontos[i].y;
-    }
-    for(int i=1;i<grau+1;i++){
-        for(int j=0;j<grau+1-i;j++){
-            tabela[j][i] = (tabela[j + 1][i - 1] - tabela[j][i - 1]) / (pontos[i + j].x - pontos[j].x);
-        }
-        
-    }
-    printf(" i\t|  xi\t|  yi\t| Ordem 0|");
-    for(int i=1;i<grau+1;i++){
-        printf("Ordem %d|",i);
-    }
-    printf("\n");
-    for(int i=0;i<grau+1;i++){
-        printf("%d\t|%.2f\t|%.2f\t|",i,pontos[i].x,pontos[i].y);
-        for(int j=0;j<grau+1-i;j++){
-            printf("%.4f|",tabela[i][j]);
-        }
-        printf("\n");
-    }*/
+    int numPontos = 6;
+    tPonto *pontos = malloc(sizeof(tPonto)*(numPontos));
+    pontos[0].x=2; pontos[1].x=3; pontos[2].x=4; pontos[3].x=5; pontos[4].x=6;pontos[5].x=7;
+    pontos[0].y=3.69;pontos[1].y=6.7;pontos[2].y=13.65;pontos[3].y=29.68;pontos[4].y=67.24;pontos[5].y=156.66;
+    float** tabela=calculaTabelaDifDiv(pontos,grau,numPontos);
 
     //CALCULO DO POLINOMIO
     
@@ -121,10 +101,10 @@ void diferencasDivididas(){
 
         }
 
-
+    float x=4.5;
     somatorio = somaPolinomio(somatorio,vetorP[0]);
-    printaPolinomio(somatorio);
-    printf("Resultado f(3): %.4f",resultadoFuncao(somatorio.coeficiente,somatorio.grau,3));
+    printf("\n\nPolinomio formado: ");printaPolinomio(somatorio);
+    printf("Resultado f(%.3f): %.4f",x,resultadoFuncao(somatorio.coeficiente,somatorio.grau,x));
     free(pontos);
     for(int i=0;i<grau+1;i++){
     free(vetorP[i].coeficiente);}
@@ -132,30 +112,136 @@ void diferencasDivididas(){
     free(tabela);  
 }
 
-float** calculaTabela(tPonto* pontos,int grau){
-    float **tabela=alocaMatriz(grau+1,grau+1);
+float** calculaTabelaDifDiv(tPonto* pontos,int grau,int nPontos){
+    float **tabela=alocaMatriz(nPontos+1,nPontos+1);
     //FORMAÇÃO DA TABELA
-    for(int i=0;i<=grau;i++){
+    for(int i=0;i<=nPontos;i++){
         tabela[i][0] = pontos[i].y;
     }
-    for(int i=1;i<grau+1;i++){
-        for(int j=0;j<grau+1-i;j++){
+    for(int i=1;i<nPontos;i++){
+        for(int j=0;j<nPontos-i;j++){
             tabela[j][i] = (tabela[j + 1][i - 1] - tabela[j][i - 1]) / (pontos[i + j].x - pontos[j].x);
         }
         
     }
-    printf(" i\t|  xi\t|  yi\t| Ordem 0|");
-    for(int i=1;i<grau+1;i++){
-        printf("Ordem %d|",i);
+    printf(" i\t|  xi\t|  yi\t|f[0]\t|");
+    for(int i=1;i<nPontos;i++){
+        printf("f[%d]\t|",i);
     }
     printf("\n");
-    for(int i=0;i<grau+1;i++){
+    for(int i=0;i<nPontos;i++){
         printf("%d\t|%.2f\t|%.2f\t|",i,pontos[i].x,pontos[i].y);
-        for(int j=0;j<grau+1-i;j++){
-            printf("%.4f|",tabela[i][j]);
+        for(int j=0;j<nPontos-i;j++){
+            printf("%.2f\t|",tabela[i][j]);
         }
         printf("\n");
     }
     return tabela;
 
+}
+
+float** calculaTabelaDifFin(tPonto* pontos,int nPontos){
+    float **tabela=alocaMatriz(nPontos,nPontos);
+    //preenche primeira coluna
+    
+    
+    for(int i=0;i<nPontos;i++){
+        tabela[i][0] =  pontos[i].y;
+    }
+    //CALCULA VALORES DA TABELA
+    for(int i=1;i<nPontos;i++){
+        for(int j=0;j<nPontos-i;j++){
+            tabela[j][i] = (tabela[j + 1][i - 1] - tabela[j][i - 1]);  
+        }
+    }
+
+    //PRINTA A TABELA
+    printf("xi\t|0f[x]\t|");
+    for(int i=0;i<nPontos;i++){
+        printf("%df[x]\t|",i);
+    }
+    printf("\n");
+    printf("-----------------------------------------");printf("\n");
+    for(int i=0;i<nPontos;i++){
+        printf("%.2f\t|%.2f\t|",pontos[i].x,pontos[i].y);
+        for(int j=0;j<nPontos-i;j++){
+            printf("%.2f\t|",tabela[i][j]);
+        }
+        printf("\n-----------------------------------------");printf("\n");
+    }
+    return tabela;
+}
+void diferencasFinitas(){
+    //ENTRADA DE DADOS
+    int numPontos = 3;
+    int grau = 2;
+    tPonto *pontos=malloc(sizeof(tPonto)*numPontos);
+    pontos[0].x=0;pontos[1].x=1; pontos[2].x=2; 
+    pontos[0].y=0; pontos[1].y=0.5; pontos[2].y= 2.0/3.0;
+    int h = pontos[1].x - pontos[0].x;
+    
+    //CALCULA O VALOR DA TABELA
+    float** tabela = calculaTabelaDifFin(pontos,numPontos);
+
+    //APLICA A FORMULA Pi(x)
+    Polinomio somatorio;
+    somatorio.coeficiente = malloc(sizeof(float));
+    somatorio.coeficiente[0] = 0;
+    somatorio.grau=0;
+    
+    Polinomio prod;
+    prod.coeficiente = malloc(sizeof(float));
+    prod.coeficiente[0] = 1;
+    prod.grau=0;
+    
+    Polinomio *termos = malloc(sizeof(Polinomio)*(grau+1));
+    termos[0].coeficiente=malloc(sizeof(float));
+    termos[0].coeficiente[0] = tabela[0][0];
+    termos[0].grau=0;
+    
+    for(int i=1;i<=grau;i++){
+        termos[i].grau=1;
+        termos[i].coeficiente = malloc(sizeof(float)*(grau+1));
+        termos[i].coeficiente[0]=pontos[i-1].x*(-1);
+        termos[i].coeficiente[1]=1;
+        
+    }
+
+    float escalar =1;
+    for(int i=0;i<grau;i++){
+        prod.grau=0;
+        prod.coeficiente=malloc(sizeof(float));
+        prod.coeficiente[0]=1;
+        for(int j=0;j<=i;j++){
+            prod = produtoPolinomio(termos[j+1],prod);
+        }
+        escalar = (tabela[0][i+1]/(pow(h,(i+1))*fatorial(i+1)));
+        prod=prodEscalarPolinomio(escalar,prod);
+        somatorio = somaPolinomio(somatorio,prod);
+    }
+    somatorio = somaPolinomio(somatorio,termos[0]);
+    printf("VALOR DE f(1.3) %f= ",resultadoFuncao(somatorio.coeficiente,somatorio.grau,1.3));
+   
+   /* METODO DIFERENCAS DIVIDIDAS
+        for(int i=0;i<grau;i++){
+        prod.grau=0;
+        prod.coeficiente=malloc(sizeof(float));
+        prod.coeficiente[0]=1;
+        for(int j=0;j<=i;j++){
+            prod = produtoPolinomio(termos[j+1],prod);
+        }
+        prod = prodEscalarPolinomio(tabela[0][i+1],prod);
+        somatorio=somaPolinomio(somatorio,prod);
+
+
+    }*/
+
+
+
+    for(int i=0;i<=grau;i++){
+        free(termos[i].coeficiente);
+    }
+    free(termos);
+    free(pontos);
+    desalocaMatriz(numPontos,tabela);
 }

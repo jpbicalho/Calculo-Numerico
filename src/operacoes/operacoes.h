@@ -22,4 +22,5 @@ void printaPolinomio(Polinomio);
 Polinomio somaPolinomio(Polinomio,Polinomio);
 Polinomio prodEscalarPolinomio(float,Polinomio);
 float arredonda4casas(float);
+float fatorial(float);
 #endif

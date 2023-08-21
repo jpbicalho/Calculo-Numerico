@@ -175,3 +175,9 @@ void desalocaMatriz(int linhas,float** matriz){
     }
     free(matriz);
 }
+
+float fatorial(float n){
+    if (n== 1){//caso base
+        return 1;
+    } else return n*fatorial(n-1);
+}

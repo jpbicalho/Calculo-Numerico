@@ -8,6 +8,6 @@
 #include "interpolacao/interpolacao.h"
 
 int main(){ 
-    diferencasDivididas();
+    diferencasFinitas();
     return 0;
 }
