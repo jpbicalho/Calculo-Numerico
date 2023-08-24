@@ -4,11 +4,13 @@
 #include "../operacoes/operacoes.h"
 void eliminacaoGauss(){
     int linhas, colunas;
+    printf("digite a ordem da matriz: ");
     scanf("%d", &linhas);
-    scanf("%d", &colunas);
+    colunas = linhas;
     float **A,*b;
-    
+    printf("\nDigite os coeficientes...");
     A = criaMatriz(linhas,colunas);//matriz dos coeficientes
+    printf("\nAgora digite os termos de B...\n");
     b = criaVetor(linhas);//matriz das respostas
     faseEliminacao(A,b,linhas,colunas);
     faseSubstituicao(A,b,linhas,colunas);
@@ -16,30 +18,38 @@ void eliminacaoGauss(){
 
 }
 void faseSubstituicao(float** matriz,float* vetor,int linhas,int colunas){
+    printf("Matriz apos o processo de eliminacao:");
+    printaMatriz(matriz,linhas,colunas);
     float *variavel = malloc(sizeof(float)*linhas);
-      for (int i = linhas - 1; i >= 0; i--) {
+      for (int i=linhas-1;i>=0;i--) {
         variavel[i] = vetor[i];
-        for (int j = i + 1; j < linhas; j++) {
-            variavel[i] -= matriz[i][j] * variavel[j];
+        for (int j=i+1;j<linhas;j++) {
+            variavel[i] = variavel[i] - matriz[i][j] * variavel[j];
         }
-        variavel[i] /= matriz[i][i];
+        variavel[i] = variavel[i]/ matriz[i][i];
     }
     printf("\n\n\tVALOR DA MATRIZ RESULTANTE:\n\n");
     printaVetor(variavel,linhas);
     return;
 }
 ConjuntoMat faseEliminacao(float** matriz,float* vetor,int linha,int coluna){
-    float **mult=alocaMatriz(linha,coluna);
+    float **mult=alocaMatriz(linha,coluna);//multiplicadores
     float **A=alocaMatriz(linha,coluna);
+   
     for(int k=0;k<linha-1;k++){
-        for (int i = k+1; i <linha; i++){
-            mult[i][k] = -1 * (matriz[i][k] / matriz[k][k]);
+        for (int i=k+1;i<linha;i++){
+            mult[i][k]=-1*(matriz[i][k]/matriz[k][k]);
+            printf("\nmultiplicador[%d][%d] = %.2f\n",i,k,mult[i][k]);
             for(int j=k;j<linha;j++){
-                matriz[i][j] = matriz[i][j] + mult[i][k] * matriz[k][j];
+                matriz[i][j]=matriz[i][j]+mult[i][k]*matriz[k][j];
                 A[i][j]=matriz[i][j];
+                
             }
             vetor[i]= vetor[i]+mult[i][k]*vetor[k];
+
         }
+        printaMatrizResultante(vetor,matriz,linha);
+        printf("\n");        
     }
     ConjuntoMat novo;
     
@@ -52,8 +62,9 @@ ConjuntoMat faseEliminacao(float** matriz,float* vetor,int linha,int coluna){
 
 void decomposicaoLU(){
     int linha, coluna;
+    printf("Digite a ordem da matriz: \n");
     scanf("%d", &linha);
-    scanf("%d", &coluna);
+    coluna=linha;
     float **A,*b,*y; 
     A = criaMatriz(linha,coluna);//matriz dos coeficientes
     b = criaVetor(linha);//matriz das respostas
@@ -106,25 +117,28 @@ void adaptaMatrizL(float** matriz,int linha,int coluna){
 }
 
 void metodoJacobi(){
+    // ENTRADA DE DADOS
+    printf("qual a quantidade de incognitas: \n");
+    int tamanho;scanf("%d", &tamanho);
+    printf("\ndigite o numero maximo de iteracoes:");
+    int ite; scanf("%d", &ite);
+    printf("\nqual a precisao do metodo: ");
+    float precisao; scanf("%f", &precisao);
+    printf("Os valores de chute serao...\n");
+    float* incognitas=criaVetor(tamanho);
+    float* atualizacao=criaVetorValor(tamanho,0.0);
+    printf("Coeficientes do sistema:\n\n");
+    float **mat=criaMatriz(tamanho,tamanho+1);
     int it = 0;
-    float precisao = 0.01;
-    float incognitas[3]={0,0,0};
-    float atualizacao[3]={0,0,0};
-    int tamanho=3;
-    float mat[3][4]={
-        {1,2,-2, 1},
-        {1,1, 1, 1},
-        {2,2, 1, 1}};
-    float x=0;
-    
+    //PRINTANDO E CALCULANDO VALORES DA TABELA
     printf("k\t|");
     for(int i=0;i<tamanho;i++){
-        printf("x%d\t|",i);
+        printf("x%d\t\t|",i);
     }
     printf("erro\n");
-    printf("%d\t",it);
+    printf("%d\t\t",it);
     for(int i=0;i<tamanho;i++){
-    printf("|%.2f\t",incognitas);
+        printf("|%.2f\t\t",incognitas[i]);
     }
     printf("|----\n");
     float erro;
@@ -133,10 +147,10 @@ void metodoJacobi(){
         printf("%d\t",it);
         for(int i=0;i<tamanho;i++){
             atualizacao[i]=calculaFormulaJacobi(3,mat[i],incognitas,i);
-            printf("|%.2f\t",atualizacao[i]);
+            printf("|%.2f\t\t",atualizacao[i]);
         }
         erro = calculaErro(incognitas,atualizacao,tamanho);
-        printf("|%.4f",erro);
+        printf("|%.2f",erro);
         for(int i=0;i<3;i++){
             
             incognitas[i] = atualizacao[i];
@@ -144,8 +158,8 @@ void metodoJacobi(){
         printf("\n");
         
         
-    }while(it<=6 && erro>precisao);
-    
+    }while(it<=ite && erro>precisao);
+    free(atualizacao);free(incognitas);desalocaMatriz(tamanho,mat);
 }
 float calculaFormulaJacobi(int dimensao,float* linha,float* valores,int it){
     float coef = 1.0/linha[it];//  1/Aii
@@ -165,4 +179,60 @@ float calculaErro(float* k1,float* k2,int tam){
             }
     }
     return erro;
+}
+
+void metodoGaussSeidel(){
+    
+    printf("qual a quantidade de incognitas: ");
+    int tamanho;scanf("%d", &tamanho);
+    printf("\ndigite o numero maximo de iteracoes:");
+    int ite; scanf("%d", &ite);
+    int it=0;
+    printf("\nqual a precisao do metodo: ");
+    float precisao; scanf("%f", &precisao);
+    printf("Os valores de chute serao...\n");
+    float* incognitas=criaVetor(tamanho);
+    float* atualizacao=criaVetorValor(tamanho,0.0);
+    printf("Coeficientes do sistema:\n\n");
+    float **mat=criaMatriz(tamanho,(tamanho+1));
+
+    printf("k\t|");
+    for(int i=0;i<tamanho;i++){
+        printf("x%d\t\t|",i);
+    }
+    printf("erro\n");
+    printf("----------------------------------------------------------------\n");
+    printf("%d\t",it);
+    for(int i=0;i<tamanho;i++){
+    printf("|%.2f\t\t",incognitas[i]);
+    }
+    printf("|----\n");
+    printf("----------------------------------------------------------------\n");
+    float erro;
+    do{
+        it++;
+        printf("%d\t",it);
+        for(int i=0;i<tamanho;i++){
+            incognitas[i] = atualizacao[i];
+            atualizacao[i]=calculaFormulaJacobi(3,mat[i],atualizacao,i);
+            printf("|%.4f\t\t",atualizacao[i]);
+        }
+        erro = calculaErro(incognitas,atualizacao,tamanho);
+        printf("|%.4f",erro);
+
+       printf("\n----------------------------------------------------------------\n");
+        
+        
+    }while(it<ite && erro>precisao);
+    printf("\n\nfinalizado");
+    
+}
+void printaMatrizResultante(float* vetor,float** matriz,int linha){
+    printf("\n");
+    for(int i=0;i<linha;i++){
+        for(int j=0;j<linha;j++){
+            printf("%.2f\t",matriz[i][j]);
+        }
+        printf("|%.2f\n",vetor[i]);
+    }
 }

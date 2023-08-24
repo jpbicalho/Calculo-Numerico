@@ -17,6 +17,14 @@ float* criaVetor(int linha){
     return novoVetor;
     
 }
+float* criaVetorValor(int linha,float valor){
+    float* novoVetor=malloc(sizeof(float)*linha);
+     for (int i = 0; i<linha; i++)
+    {
+        novoVetor[i]=valor;        
+    }
+    return novoVetor;
+}
 
 float** alocaMatriz(int linha, int coluna){
     float** novaMatriz;
@@ -190,3 +198,16 @@ Polinomio criaPolinomio(float valor){
     p.grau=0;
     return p;
 }
+
+Polinomio recebePolinomio(){
+    Polinomio aux;
+    printf("Qual o grau do polinômio: ");
+    scanf("%d", &aux.grau);
+    aux.coeficiente = malloc(sizeof(float)*(aux.grau+1));
+    for(int i=0;i<=aux.grau;i++){
+        printf("\nDigite o valor que acompanha a%dx%d",aux.grau-i,aux.grau-i);
+        scanf("%f", &aux.coeficiente[aux.grau-i]);
+    }
+    return aux;
+}
+

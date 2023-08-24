@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h> 
+#include "../operacoes/operacoes.h"
 
 float calculaH(tIntegracao t){
     
@@ -39,14 +40,17 @@ int coeficienteSegundaRegradeSimpson(int i,int n){
 void metodoGenerico(int metodo){
     tIntegracao dados;
     //definindo funcao
-    dados.qtdTermos = 1; 
-    dados.funcao.expoentes = malloc(sizeof(tFuncao)*dados.qtdTermos);
-    dados.funcao.coeficientes = malloc(sizeof(tFuncao)*dados.qtdTermos);
-    dados.funcao.expoentes[0] = -1 ;
-    dados.funcao.coeficientes[0]= 1 ;
+    printf("Digite a quantidade de termos da funcao: \n");
+    scanf("%d",&dados.qtdTermos);
+    dados.funcao = criaTFuncao(dados.funcao,dados.qtdTermos);
+
     //definindo intrucoes para integracao
-    dados.A = 1; dados.B=7;
-    dados.n = 6; dados.h = calculaH(dados);
+    printf("Qual o intervalo de integracao?\n A=? ");
+    scanf("%f", &dados.A);
+    printf("B = ? ");scanf("%f", &dados.B);
+    printf("\nQual o numero de intervalos? ");
+    scanf("%d", &dados.n);
+    dados.h = calculaH(dados);
     dados.xi=dados.A;
     dados.yi = calculaFuncao(dados.funcao,dados.qtdTermos,dados.xi); 
     //começo da tabela e criação da logica
@@ -100,4 +104,14 @@ void metodoGenerico(int metodo){
     free(dados.funcao.coeficientes);
     free(dados.funcao.expoentes); 
 }
-
+tFuncao criaTFuncao(tFuncao func, int tam){
+    func.coeficientes=malloc(sizeof(float)*tam);
+    func.expoentes = malloc(sizeof(float)*tam);
+    for(int i=0;i<tam;i++){
+        printf("\nqual o valor do coeficiente %d",i);
+        scanf("%f",&func.coeficientes[i]);
+        printf("\nqual o valor do expoente %d",i);
+        scanf("%f",&func.expoentes[i]);
+    }
+    return func;
+}

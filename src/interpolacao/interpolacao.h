@@ -7,7 +7,7 @@ typedef struct{
 }tPonto;
 
 void metodoLagrange();
-Polinomio calculaL(int i,tPonto* pontos);
+Polinomio calculaL(int i,tPonto* pontos,int numPontos,int grauL);
 void diferencasDivididas();
 float** calculaTabelaDifDiv(tPonto*,int,int);
 float** calculaTabelaDifFin(tPonto*,int);
@@ -17,6 +17,8 @@ Polinomio calculaPolinomioDifFin(float** tabela,int grau,float h,Polinomio prod,
 
 void diferencasFinitas();
 void diferencasGenericas(int);
+
+tPonto* criaPontos(int num);
 
 
 #endif

@@ -14,6 +14,6 @@ void metodoFalsaPosicao();
 MetodosRaizes calculaXkFalsaPosicao(MetodosRaizes dados);
 void metodoNewtonRaphson();
 MetodosRaizes calculaXkNewtonRaphson(MetodosRaizes dados);
-
+float* criaFuncao(int grau);
 
 #endif

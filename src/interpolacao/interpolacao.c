@@ -3,27 +3,37 @@
 #include <stdlib.h>
 #include <math.h>
 
-void metodoLagrange(){
-    int grauL=2;
-    int *y = malloc(sizeof(int)*3);
-    tPonto *pontos=malloc(sizeof(tPonto)*3);
-    pontos[0].x=0; pontos[1].x=0.5; pontos[2].x=1;
-    pontos[0].y=1.3; pontos[1].y=2.5; pontos[2].y=0.9;
+void metodoLagrange(){//PRONTO
+    printf("\nDigite o grau de Pn(x): ");
+    int grauL; scanf("%d",&grauL);
+    printf("\nQuantidade de pontos: ");
+    int numPontos; scanf("%d", &numPontos);
+    
+    tPonto *pontos=criaPontos(numPontos);
     Polinomio l;
+    l.grau=2;
     l.coeficiente=malloc(sizeof(float)*(grauL+1));
     l.coeficiente[0]=0;l.coeficiente[1]=0;l.coeficiente[2]=0;
     for(int i=0;i<=grauL;i++){
-        printf("\nMetodo Lagrange l%d: ",i);printaPolinomio(calculaL(i,pontos));
+        printf("\nMetodo Lagrange l%d: ",i);printaPolinomio(calculaL(i,pontos,numPontos,grauL));
         printf("Y%d=%.2f\n",i,pontos[i].y);
-        l = somaPolinomio(l,prodEscalarPolinomio(pontos[i].y,calculaL(i,pontos)));
-       
+        l = somaPolinomio(l,prodEscalarPolinomio(pontos[i].y,calculaL(i,pontos,numPontos,grauL)));  
+        
     }
+    
     printaPolinomio(l);
+    float x=0;char val;
+    printf("\nDeseja calcular um valor de x para a funcao?(s/n) ");
+    getchar();
+    scanf("%c", &val);
+    if(val == 's'){
+        printf("\ndigite o valor de x:"); scanf("%f", &x);
+        printf("VALOR DE f(%f) = %.4f \n\n",x,resultadoFuncao(l.coeficiente,l.grau,x));
+    }
     
 }
-Polinomio calculaL(int i,tPonto* pontos){
-    int numPontos=3;
-    int grauL=2;
+Polinomio calculaL(int i,tPonto* pontos,int numPontos,int grauL){
+
     float denominador=1;
     
     Polinomio p1,produtorio;
@@ -45,7 +55,7 @@ Polinomio calculaL(int i,tPonto* pontos){
         
     }
     for(int j=0;j<=produtorio.grau;j++){
-        produtorio.coeficiente[j] /= denominador;
+        produtorio.coeficiente[j] = produtorio.coeficiente[j] / denominador;
     }
     return produtorio;
 
@@ -112,22 +122,18 @@ float** calculaTabelaDifFin(tPonto* pontos,int nPontos){
     return tabela;
 }
 
-void diferencasGenericas(int metodo){
+void diferencasGenericas(int metodo){//PRONTO
     
     //ENTRADA DE DADOS
-    /*int numPontos = 3;
-    int grau = 2,x=1.3;
-    tPonto *pontos=malloc(sizeof(tPonto)*numPontos);
-    pontos[0].x=0;pontos[1].x=1; pontos[2].x=2; 
-    pontos[0].y=0; pontos[1].y=0.5; pontos[2].y= 2.0/3.0;
-    int h = pontos[1].x - pontos[0].x;*/
 
-    int grau = 3;
-    int numPontos = 6;
-    tPonto *pontos = malloc(sizeof(tPonto)*(numPontos));
-    pontos[0].x=2; pontos[1].x=3; pontos[2].x=4; pontos[3].x=5; pontos[4].x=6;pontos[5].x=7;
-    pontos[0].y=3.69;pontos[1].y=6.7;pontos[2].y=13.65;pontos[3].y=29.68;pontos[4].y=67.24;pontos[5].y=156.66;
-
+    int grau,numPontos;
+    printf("Digite o grau do polinomio Pn(x): ");
+    scanf("%d", &grau);
+    printf("\nDigite o numero de pontos: ");
+    scanf("%d", &numPontos);
+    tPonto *pontos = criaPontos(numPontos);
+    int h = pontos[1].x - pontos[0].x;
+ 
     float **tabela;
     switch (metodo)
     {
@@ -173,8 +179,15 @@ void diferencasGenericas(int metodo){
     }
     resultante=somaPolinomio(resultante,termos[0]);
     printaPolinomio(resultante);
-    printf("VALOR DE f(x) %.4f= ",resultadoFuncao(resultante.coeficiente,resultante.grau,4.5));
-   
+    float x=0;char val;
+    printf("\nDeseja calcular um valor de x para a funcao?(s/n) ");
+    getchar();
+    scanf("%c", &val);
+    if(val == 's'){
+        printf("\ndigite o valor de x:"); scanf("%f", &x);
+        printf("VALOR DE f(%f) = %.4f \n\n",x,resultadoFuncao(resultante.coeficiente,resultante.grau,x));
+    }
+    
     //DESALOCA ELEMENTOS
     for(int i=0;i<=grau;i++){
         free(termos[i].coeficiente);
@@ -195,9 +208,10 @@ Polinomio calculaPolinomioDifDiv(int grau,Polinomio prod,Polinomio *vetorP,Polin
         }
         prod = prodEscalarPolinomio(tabela[0][i+1],prod);
         somatorio=somaPolinomio(somatorio,prod);
-
-
-        }
+        
+    }
+    
+    return somatorio;
 
 }
 
@@ -218,4 +232,15 @@ Polinomio calculaPolinomioDifFin(float** tabela,int grau,float h,Polinomio prod,
     }
     somatorio = somaPolinomio(somatorio,termos[0]);
     return somatorio;
+}
+
+tPonto* criaPontos(int num){
+    tPonto* pontos=malloc(sizeof(tPonto)*num);
+    for(int i=0;i<num;i++){
+        printf("\ndigite o valor de x%d: ",i);
+        scanf("%f", &pontos[i].x);
+        printf("\ndigite o valor de y%d: ",i);
+        scanf("%f", &pontos[i].y);
+    }
+    return pontos;
 }

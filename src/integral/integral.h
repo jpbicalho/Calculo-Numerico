@@ -28,4 +28,5 @@ void metodoGenerico(int);
 int coeficienteTrapezio(int i,int n);
 int coeficientePrimeiraRegradeSimpson(int i ,int n);
 int coeficienteSegundaRegradeSimpson(int i, int n);
+tFuncao criaTFuncao(tFuncao,int);
 #endif

@@ -8,7 +8,8 @@
 #include "interpolacao/interpolacao.h"
 
 int main(){ 
-    metodoJacobi();
+    printf("Os metodos a seguir foram feitos baseados em que suas condicoes ja foram validadas anteriormante.\n");
+    direcionaMenu(criaMenu());
     
     return 0;
 }

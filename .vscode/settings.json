@@ -62,6 +62,7 @@
     "sistemaslineares.h": "c",
     "operacoes.h": "c",
     "interpolacao.h": "c",
-    "raizes.h": "c"
+    "raizes.h": "c",
+    "stdlib.h": "c"
   }
 }

@@ -14,6 +14,7 @@ void printaMatriz(float** matriz,int linha,int coluna);
 float** copiaMatriz(float** matriz,int linha,int coluna);
 void printaVetor(float* vet, int tamanho);
 float* criaVetor(int linha);
+float* criaVetorValor(int linha,float valor);
 float* copiaVetor(float* vetor,int tamanho);
 float resultadoFuncao(float* coeficientes,int grau,float x);
 float modulo(float num);
@@ -24,4 +25,6 @@ Polinomio prodEscalarPolinomio(float,Polinomio);
 float arredonda4casas(float);
 float fatorial(float);
 Polinomio criaPolinomio(float valor);
+Polinomio recebePolinomio();
+
 #endif
